@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Quản lý đơn & góp ý{% endblock %}
+{% block content %}
+
+<div class="container py-5">
+
+  <!-- 🔽 Báo cáo đơn hàng -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="section-title">📦 Đơn hàng gần đây</h2>
+    <a href="/export/orders" class="btn btn-sm btn-outline-success">⬇️ Xuất Excel</a>
+  </div>
+
+  <div class="table-responsive mb-5">
+    <table class="table table-bordered table-striped table-hover align-middle">
+      <thead class="table-light text-center">
+        <tr>
+          <th>#</th>
+          <th>👤 Họ tên</th>
+          <th>📞 Điện thoại</th>
+          <th>📍 Địa chỉ</th>
+          <th>📝 Nội dung</th>
+          <th>⏰ Thời gian</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td class="text-center">{{ loop.index }}</td>
+          <td><strong>{{ order.name }}</strong></td>
+          <td>{{ order.phone }}</td>
+          <td>{{ order.address }}</td>
+          <td>{{ order.content }}</td>
+          <td class="text-muted">{{ order.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 🔽 Báo cáo góp ý -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="section-title">💬 Góp ý từ khách hàng</h2>
+    <a href="/export/feedbacks" class="btn btn-sm btn-outline-primary">⬇️ Xuất Excel</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover align-middle">
+      <thead class="table-light text-center">
+        <tr>
+          <th>#</th>
+          <th>👤 Tên</th>
+          <th>⭐ Đánh giá</th>
+          <th>💭 Góp ý</th>
+          <th>⏰ Thời gian</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fb in feedbacks %}
+        <tr>
+          <td class="text-center">{{ loop.index }}</td>
+          <td><strong>{{ fb.name }}</strong></td>
+          <td class="text-warning">{{ fb.rating }}</td>
+          <td>{{ fb.message }}</td>
+          <td class="text-muted">{{ fb.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}

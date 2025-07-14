@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Đăng nhập quản trị{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="bg-white p-4 rounded shadow-sm border">
+        <h2 class="text-center mb-4">🔐 Đăng nhập quản trị</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} text-center">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" novalidate>
+          {{ form.hidden_tag() }}
+          
+          <div class="mb-3">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control", placeholder="Nhập tên đăng nhập") }}
+            {% if form.username.errors %}
+              <div class="text-danger small">
+                {{ form.username.errors[0] }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", placeholder="Nhập mật khẩu") }}
+            {% if form.password.errors %}
+              <div class="text-danger small">
+                {{ form.password.errors[0] }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="form-check mb-3">
+            {{ form.remember(class="form-check-input") }}
+            {{ form.remember.label(class="form-check-label") }}
+          </div>
+
+          <div class="text-center">
+            {{ form.submit(class="btn btn-primary w-100") }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

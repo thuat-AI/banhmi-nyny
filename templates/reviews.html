@@ -1,0 +1,21 @@
+<!-- templates/reviews.html -->
+{% extends "base.html" %}
+{% block title %}Đánh giá từ khách hàng - Bánh mì NYNY{% endblock %}
+{% block content %}
+<h2 class="text-center mb-4">❤️ Đánh giá từ khách hàng</h2>
+
+{% if reviews %}
+  <div class="row g-4">
+    {% for rv in reviews %}
+      <div class="col-md-6">
+        <blockquote class="blockquote bg-white p-3 rounded shadow-sm">
+          <p>{{ rv.comment }}</p>
+          <footer class="blockquote-footer mt-2">{{ rv.name }} – {{ rv.rating }}</footer>
+        </blockquote>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-center">Chưa có đánh giá nào.</p>
+{% endif %}
+{% endblock %}

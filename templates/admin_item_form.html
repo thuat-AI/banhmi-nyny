@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Thêm món' if action == 'add' else 'Sửa món' }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="section-title text-center mb-4">{{ '➕ Thêm món mới' if action == 'add' else '✏️ Sửa món' }}</h2>
+
+  <form method="POST" enctype="multipart/form-data" class="row g-3 bg-white shadow-sm p-4 rounded">
+    {{ form.hidden_tag() }}
+    <div class="col-md-6">
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(class="form-control") }}
+    </div>
+    <div class="col-md-6">
+      {{ form.price.label(class="form-label") }}
+      {{ form.price(class="form-control") }}
+    </div>
+    <div class="col-12">
+      {{ form.image.label(class="form-label") }}
+      {{ form.image(class="form-control") }}
+    </div>
+    <div class="col-12 text-center">
+      {{ form.submit(class="btn btn-custom px-4") }}
+      <a href="{{ url_for('admin_page') }}" class="btn btn-secondary">⬅️ Quay lại</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

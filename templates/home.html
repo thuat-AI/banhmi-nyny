@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Trang chính - Bánh Mì NYNY{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <!-- 🔔 Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="alert alert-{{ category }} text-center" role="alert">
+          {{ msg }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- 📊 Tổng quan -->
+  <div class="text-center mb-4">
+    <p class="text-muted">📦 Đơn hàng: <strong>{{ order_count }}</strong> | 💬 Đánh giá: <strong>{{ feedback_count }}</strong></p>
+  </div>
+
+  <!-- 🥖 Món chính -->
+  <h2 class="section-title mb-4 text-center">🥖 Thực đơn nổi bật</h2>
+  <div class="row g-4">
+    {% for item in menu_items %}
+    <div class="col-md-4 col-sm-6">
+      <div class="card h-100 shadow-sm border-0">
+        <img src="{% if item.image %}{{ url_for('static', filename=item.image) }}{% else %}https://source.unsplash.com/400x200/?vietnamese,food{% endif %}"
+             class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ item.name }}">
+        <div class="card-body text-center">
+          <h5 class="card-title text-uppercase fw-bold">{{ item.name }}</h5>
+          <p class="card-text text-danger fs-5">{{ "{:,.0f}".format(item.price | float) }} đ</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if not current_user.is_authenticated or current_user.role == 'user' %}
+    <!-- 📝 Đặt hàng -->
+    <h2 class="section-title mt-5 text-center" id="order">📝 Đặt hàng nhanh</h2>
+    <form method="POST" class="row g-3 bg-white p-4 rounded shadow-sm" id="order-form">
+      <input type="hidden" name="form_type" value="order">
+      <div class="col-md-6">
+        <label class="form-label">Họ và tên</label>
+        <input type="text" class="form-control" name="order_name" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Số điện thoại</label>
+        <input type="tel" class="form-control" name="order_phone" required>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Địa chỉ nhận hàng</label>
+        <textarea class="form-control" name="order_address" rows="2" required></textarea>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Nội dung đặt món</label>
+        <textarea class="form-control" name="order_content" rows="3" required></textarea>
+      </div>
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-custom px-4">🚀 Gửi yêu cầu</button>
+      </div>
+    </form>
+
+    <!-- 📣 Đánh giá -->
+    <h2 class="section-title mt-5 text-center" id="feedback">📣 Góp ý & Đánh giá</h2>
+    <form method="POST" class="row g-3 bg-white p-4 rounded shadow-sm" id="feedback-form">
+      <input type="hidden" name="form_type" value="feedback">
+      <div class="col-md-6">
+        <label class="form-label">Tên của bạn</label>
+        <input type="text" class="form-control" name="feedback_name" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Chất lượng dịch vụ</label>
+        <select class="form-select" name="feedback_rating" required>
+          <option value="">Chọn sao</option>
+          <option>⭐</option>
+          <option>⭐⭐</option>
+          <option>⭐⭐⭐</option>
+          <option>⭐⭐⭐⭐</option>
+          <option>⭐⭐⭐⭐⭐</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Góp ý chi tiết</label>
+        <textarea class="form-control" name="feedback_message" rows="3" required></textarea>
+      </div>
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-custom px-4">💬 Gửi đánh giá</button>
+      </div>
+    </form>
+  {% else %}
+    <div class="alert alert-warning text-center mt-5">
+      👋 Xin chào <strong>{{ current_user.username }}</strong>, bạn đang đăng nhập với quyền <strong>{{ current_user.role }}</strong>. Tính năng đặt hàng và đánh giá chỉ dành cho khách hoặc người dùng thông thường.
+    </div>
+  {% endif %}
+
+  <!-- 🗺️ Địa chỉ -->
+  <h2 class="section-title mt-5 text-center">📍 Địa chỉ cửa hàng</h2>
+  <div class="bg-light rounded shadow-sm p-3">
+    <p class="text-center mb-3">
+      🏠 <strong>Quầy Thức Ăn Nhanh - Gần UBND xã Liên Sơn Lăk</strong><br>
+      📞 <strong>0935 221 338</strong>
+    </p>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1948.2978207029055!2d108.17397373847122!3d12.40998104696405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31718ee36c49998d%3A0xc5532e2e53a2ca4!2zUXXhuqd5IFRodeG7kWMgVHJ1bmcgVMOibSBIdXnhu4duIEzhuq9r!5e0!3m2!1svi!2s!4v1752400405467!5m2!1svi!2s" 
+      width="100%" height="350" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+
+</div>
+{% endblock %}

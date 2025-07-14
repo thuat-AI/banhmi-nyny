@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Sửa người dùng{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3 class="section-title">✏️ Sửa thông tin người dùng</h3>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">Tên đăng nhập</label>
+      <input type="text" class="form-control" value="{{ user.username }}" disabled>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Quyền</label>
+      <select name="role" class="form-select">
+        <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+        <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Mật khẩu mới (nếu muốn đổi)</label>
+      <input type="password" name="new_password" class="form-control" placeholder="Để trống nếu không đổi">
+    </div>
+
+    <button type="submit" class="btn btn-primary">💾 Lưu thay đổi</button>
+    <a href="{{ url_for('list_users') }}" class="btn btn-secondary">⬅️ Quay lại</a>
+  </form>
+</div>
+{% endblock %}

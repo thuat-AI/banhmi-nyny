@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}➕ Thêm người dùng - Quản trị{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="section-title text-center mb-4">➕ Thêm người dùng mới</h2>
+
+  <!-- 🔔 Flash message -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} text-center" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- 🧾 Form thêm user -->
+  <form method="POST" class="bg-white p-4 rounded shadow-sm col-lg-6 mx-auto">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+      {{ form.username.label(class="form-label") }}
+      {{ form.username(class="form-control", placeholder="Tên đăng nhập") }}
+      {% if form.username.errors %}
+        <div class="text-danger small">{{ form.username.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.password.label(class="form-label") }}
+      {{ form.password(class="form-control", placeholder="Mật khẩu") }}
+      {% if form.password.errors %}
+        <div class="text-danger small">{{ form.password.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <div class="mb-4">
+      {{ form.role.label(class="form-label") }}
+      {{ form.role(class="form-select") }}
+      {% if form.role.errors %}
+        <div class="text-danger small">{{ form.role.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+      <button type="submit" class="btn btn-custom px-4">{{ form.submit.label.text }}</button>
+      <a href="{{ url_for('list_users') }}" class="btn btn-secondary px-4">⬅️ Quay lại</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
